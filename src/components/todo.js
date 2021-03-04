@@ -23,7 +23,6 @@ function ToDo({ header }) {
 
   const onRemove = (id) => {
     setTask(task.filter((item) => item.id !== id));
-    console.log(id);
   };
 
   return (
