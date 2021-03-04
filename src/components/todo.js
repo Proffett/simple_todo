@@ -29,6 +29,20 @@ function ToDo({ header }) {
     <main>
       <h1>{header}</h1>
 
+      <Form onSubmit={onSubmit}>
+        <input
+          style={{ color: "#222", fontSize: "18px" }}
+          placeholder="What should i do?"
+          autoFocus
+          value={input.text}
+          onChange={onInputChanged}
+        />
+
+        <Button type="submit" style={{ margin: "10px" }}>
+          ADD
+        </Button>
+      </Form>
+
       <ListGroup style={{ color: "#000", margin: "10px" }}>
         {task.length > 0 ? (
           task.map((item) => {
@@ -52,20 +66,6 @@ function ToDo({ header }) {
           <div className="list-group-item">No tasks, please add a new task</div>
         )}
       </ListGroup>
-
-      <Form onSubmit={onSubmit}>
-        <input
-          style={{ color: "#222", fontSize: "18px" }}
-          placeholder="What should i do?"
-          autoFocus
-          value={input.text}
-          onChange={onInputChanged}
-        />
-
-        <Button type="submit" style={{ margin: "10px" }}>
-          ADD
-        </Button>
-      </Form>
     </main>
   );
 }
