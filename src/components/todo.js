@@ -1,67 +1,71 @@
 import React, { useState } from "react";
-import {
-  ButtonGroup,
-  Button,
-  ListGroup,
-  ListGroupItem,
-  Form,
-} from "react-bootstrap";
+import { Button, ListGroup, ListGroupItem, Form } from "react-bootstrap";
 
-
-function ToDo(props) {
-  const [task, addTask] = useState(["Выполнить оптимизацию кода"]);
+function ToDo({ header }) {
+  const [task, setTask] = useState([{ id: 1, name: "Do plan for a month" }]);
   const [input, setInput] = useState({ text: "" });
 
-  const onValueChanged = (event) => {
+  const onInputChanged = (event) => {
     setInput({ text: event.target.value });
   };
+
   const onSubmit = (event) => {
-    setInput({ text: "" });
     event.preventDefault();
+
+    setInput({ text: "" });
+
     if (input.text.length === 0) {
-      alert("Поле не должно быть пустым");
+      alert("This field doesn't be empty");
     } else {
-      addTask([...task, input.text]);
-      console.log(task);
+      setTask([...task, { id: Math.random(), name: input.text }]);
     }
   };
-  const onRemove = (name) => {
-        addTask(task.filter((item) => item !== name));
-        console.log(name)
-  }
+
+  const onRemove = (id) => {
+    setTask(task.filter((item) => item.id !== id));
+    console.log(id);
+  };
+
   return (
     <main>
-      <h1>To Do</h1>
+      <h1>{header}</h1>
+
       <ListGroup style={{ color: "#000", margin: "10px" }}>
-        {task.map((item, i) => {
-          return (
-            <ListGroupItem key={i} style={{display: 'flex', justifyContent: "space-between"}}>
-              {item}
-              <button className="btn btn-warning" id={i} onClick={() => onRemove(task[i])}>
-                Х
-              </button>
-            </ListGroupItem>
-          );
-        })}
+        {task.length > 0 ? (
+          task.map((item) => {
+            return (
+              <ListGroupItem
+                key={item.id}
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                {item.name}
+                <button
+                  className="btn btn-warning"
+                  id={item.id}
+                  onClick={() => onRemove(item.id)}
+                >
+                  Х
+                </button>
+              </ListGroupItem>
+            );
+          })
+        ) : (
+          <div className="list-group-item">No tasks, please add a new task</div>
+        )}
       </ListGroup>
 
       <Form onSubmit={onSubmit}>
+        <input
+          style={{ color: "#222", fontSize: "18px" }}
+          placeholder="What should i do?"
+          autoFocus
+          value={input.text}
+          onChange={onInputChanged}
+        />
 
-          <input
-            style={{ color: "#222", fontSize: "18px" }}
-            placeholder="что нужно сделать?"
-            autoFocus
-            value={input.text}
-            onChange={onValueChanged}
-          />
-
-
-        <ButtonGroup>
-          <Button type="submit" style={{ margin: "10px" }}>
-            ДОБАВИТЬ
-          </Button>
-          {/* <Button style={{ margin: "10px" }}>УДАЛИТЬ</Button> */}
-        </ButtonGroup>
+        <Button type="submit" style={{ margin: "10px" }}>
+          ADD
+        </Button>
       </Form>
     </main>
   );
